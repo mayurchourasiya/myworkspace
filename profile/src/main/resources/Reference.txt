@@ -1,0 +1,35 @@
+simpleJdbcCall = new SimpleJdbcCall(dataSource).withCatalogName("cricket")
+//                .withProcedureName("match");
+//        if(player.isMom()){
+//            mom="Y";
+//        }
+//        else {
+//            mom = "N";
+//        }
+//        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("match_id",match_id)
+//                .addValue("player",player.getName()).addValue("runs",player.getRuns())
+//                .addValue("balls",player.getBalls()).addValue("is_mom",mom)
+//                .addValue("fours",player.getFours()).addValue("sixes",player.getSixes())
+//                .addValue("strike_rate",Double.valueOf(player.getRuns())/player.getBalls());
+//        simpleJdbcCall.execute(sqlParameterSource);
+//        JdbcUtils.closeConnection(dataSource.getConnection());
+        List<SqlParameter> parameters = Arrays.asList(new SqlParameter(Types.INTEGER), new SqlParameter(Types.VARCHAR)
+                , new SqlParameter(Types.INTEGER), new SqlParameter(Types.INTEGER), new SqlParameter(Types.BOOLEAN)
+                , new SqlParameter(Types.INTEGER), new SqlParameter(Types.INTEGER), new SqlParameter(Types.DOUBLE)
+                , new SqlOutParameter("status",Types.VARCHAR));
+        jdbcTemplate.call(new CallableStatementCreator() {
+            @Override
+            public CallableStatement createCallableStatement(Connection connection) throws SQLException {
+                CallableStatement callableStatement = connection.prepareCall("{call cricket.match(?,?,?,?,?,?,?,?,?)}");
+                callableStatement.setInt(1, match_id);
+                callableStatement.setString(2, player.getName());
+                callableStatement.setInt(3, player.getRuns());
+                callableStatement.setInt(4, player.getBalls());
+                callableStatement.setBoolean(5, player.isMom());
+                callableStatement.setInt(6, player.getFours());
+                callableStatement.setInt(7, player.getSixes());
+                callableStatement.setDouble(8, Double.valueOf(player.getRuns()) / player.getBalls());
+                callableStatement.registerOutParameter(9,Types.VARCHAR);
+                return callableStatement;
+            }
+        }, parameters);
