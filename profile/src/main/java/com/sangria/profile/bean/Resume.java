@@ -6,6 +6,7 @@ public class Resume {
 
     private Profile profile;
     private List<SkillSet> skillSet;
+    private List<String> hobbies;
 
     public Profile getProfile() {
         return profile;
@@ -31,5 +32,5 @@ public class Resume {
         this.hobbies = hobbies;
     }
 
-    private List<String> hobbies;
+
 }

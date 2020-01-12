@@ -14,7 +14,6 @@ public class ResumeController {
     public ResponseEntity createRecord(@RequestBody Resume resume) {
 
 
-
         return ResponseEntity.ok().build();
     }
 

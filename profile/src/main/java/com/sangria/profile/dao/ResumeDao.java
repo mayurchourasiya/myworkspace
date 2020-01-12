@@ -1,5 +1,6 @@
 package com.sangria.profile.dao;
 
+import com.sangria.profile.bean.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,12 @@ public class ResumeDao {
     private DataSource dataSource;
 
 
+    public boolean create(Resume resume) {
+
+
+
+        return false;
+    }
 
 
 }
