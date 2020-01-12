@@ -1,5 +1,8 @@
 package com.sangria.profile.bean;
 
+/**
+ * profile pojo
+ */
 public class Profile {
 
     private String name;

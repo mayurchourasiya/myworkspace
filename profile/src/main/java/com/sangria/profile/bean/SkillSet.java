@@ -3,7 +3,7 @@ package com.sangria.profile.bean;
 public class SkillSet {
 
     private String skillName;
-    //private Integer skillRating;
+    private Integer skillRating;
 
 
     public String getSkillName() {
@@ -14,11 +14,11 @@ public class SkillSet {
         this.skillName = skillName;
     }
 
-    /*public Integer getSkillRating() {
+    public Integer getSkillRating() {
         return skillRating;
     }
 
     public void setSkillRating(Integer skillRating) {
         this.skillRating = skillRating;
-    }*/
+    }
 }

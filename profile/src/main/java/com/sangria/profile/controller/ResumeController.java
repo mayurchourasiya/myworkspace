@@ -1,6 +1,8 @@
 package com.sangria.profile.controller;
 
 import com.sangria.profile.bean.Resume;
+import com.sangria.profile.service.ResumeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @Component
 public class ResumeController {
 
+    @Autowired
+    private ResumeService resumeService;
 
     @PostMapping(value = "/create")
     public ResponseEntity createRecord(@RequestBody Resume resume) {
-
-
-        return ResponseEntity.ok().build();
+        Integer resumeId = resumeService.createResume(resume);
+        return ResponseEntity.ok(resumeId);
     }
 
     @GetMapping(value = "/retrieve")
