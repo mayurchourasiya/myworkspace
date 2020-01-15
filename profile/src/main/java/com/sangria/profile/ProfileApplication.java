@@ -33,7 +33,7 @@ public class ProfileApplication {
 
 	@GetMapping(value = "/retrieve/{resumeId}")
 	public ResponseEntity getRecord(@PathVariable("resumeId") String resumeId ) {
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(resumeService.getResume(Integer.valueOf(resumeId)));
 	}
 
 	public static void main(String[] args) {

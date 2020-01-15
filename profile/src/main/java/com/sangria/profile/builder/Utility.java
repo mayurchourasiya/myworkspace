@@ -1,8 +1,11 @@
 package com.sangria.profile.builder;
 
+import com.sangria.profile.bean.Resume;
 import com.sangria.profile.bean.SkillSet;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -32,6 +35,22 @@ public class Utility {
             }
         }
         return stringBuilder.toString();
+    }
+
+
+    public Resume prepareResume(String[] skills, String[] hobbies, Resume resume) {
+
+        List<SkillSet> skillSetList = new ArrayList<>();
+        for (String skill : skills) {
+            SkillSet skillSet = new SkillSet();
+            skillSet.setSkillName(skill);
+            skillSetList.add(skillSet);
+        }
+
+        resume.setHobbies(Arrays.asList(hobbies));
+        resume.setSkillSet(skillSetList);
+
+        return resume;
     }
 
 }
