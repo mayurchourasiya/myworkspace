@@ -7,10 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,11 +28,11 @@ public class ProfileApplication {
 	public ResponseEntity createRecord(@RequestBody Resume resume) {
 		BigDecimal profileId = resumeService.createProfile(resume.getProfile());
 		BigDecimal resumeId = resumeService.createResume(resume,profileId);
-		return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentContextPath().path("/"+resumeId.intValue()).build().toUri()).build();
+		return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentContextPath().path("/retrieve/"+resumeId.intValue()).build().toUri()).build();
 	}
 
-	@GetMapping(value = "/retrieve")
-	public ResponseEntity getRecord() {
+	@GetMapping(value = "/retrieve/{resumeId}")
+	public ResponseEntity getRecord(@PathVariable("resumeId") String resumeId ) {
 		return ResponseEntity.ok().build();
 	}
 

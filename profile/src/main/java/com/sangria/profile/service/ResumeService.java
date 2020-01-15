@@ -55,4 +55,31 @@ public class ResumeService {
         return (BigDecimal) result.get("O_RESUME_ID");
     }
 
+    public Resume getResume(Integer resumeId){
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withCatalogName("RESUME_PKG").withProcedureName("getResume");
+        Map<String,Object> resumeResult = callProcedure("i_resume_id",resumeId);
+        String skillSet = (String) resumeResult.get("O_SKILLS");
+        String hobby = (String) resumeResult.get("O_HOBBIES");
+        BigDecimal profileId = (BigDecimal) resumeResult.get("O_PROFILE_ID");
+
+        Map<String,Object> profileResult = callProcedure("i_profile_id",profileId.intValue());
+        String name = (String) profileResult.get("I_NAME");
+        String role = (String) profileResult.get("I_ROLE");
+
+        Profile profile = new Profile();
+        profile.setName(name);
+        profile.setRole(role);
+
+        Resume resume = new Resume();
+        resume.setProfile(profile);
+
+        return resume;
+
+    }
+
+    private Map<String,Object> callProcedure(String input,Integer id){
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue(input,id);
+        return simpleJdbcCall.execute(sqlParameterSource);
+    }
+
 }
