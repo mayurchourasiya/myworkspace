@@ -5,6 +5,7 @@ import com.sangria.profile.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 
 @RestController
 @SpringBootApplication
-public class ProfileApplication {
+public class ProfileApplication extends SpringBootServletInitializer {
 
 	@Autowired
 	private ResumeService resumeService;
