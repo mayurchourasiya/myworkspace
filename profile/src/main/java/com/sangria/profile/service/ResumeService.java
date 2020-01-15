@@ -26,7 +26,7 @@ public class ResumeService {
     private Utility utility;
 
     /**
-     * First create the profile and generate the profileID to required to create resume
+     * First create the profile and generate the profileID required to create resume
      * @param profile
      * @return profileID
      */
@@ -56,6 +56,11 @@ public class ResumeService {
         return (BigDecimal) result.get("O_RESUME_ID");
     }
 
+    /**
+     * To retrieve the resume by providing resumeID
+     * @param resumeId
+     * @return Resume
+     */
     public Resume getResume(Integer resumeId){
         Map<String,Object> resumeResult = callProcedure("getResume","i_resume_id",resumeId);
         String skillSet = (String) resumeResult.get("O_SKILLS");
@@ -75,6 +80,44 @@ public class ResumeService {
         return utility.prepareResume(skillSet.split(","),hobby.split(","),resume);
     }
 
+    /**
+     * To update the resume
+     * @param resumeID
+     * @return
+     */
+    public BigDecimal updateResume(Integer resumeID, Resume resume) {
+
+        String skillSet = utility.prepareSkillSet(resume.getSkillSet());
+        String hobby = utility.prepareHobbies(resume.getHobbies());
+
+
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withCatalogName("RESUME_PKG").withProcedureName("updateResume");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("i_resume_id",resumeID).addValue("i_skills",skillSet)
+                .addValue("i_hobbies",hobby).addValue("i_name",resume.getProfile().getName()).addValue("i_role",resume.getProfile().getRole());
+
+
+        Map<String,Object> result = simpleJdbcCall.execute(sqlParameterSource);
+        return (BigDecimal) result.get("O_RESUME_ID");
+    }
+
+
+    public void deleteResume(Integer resumeID) {
+        String RESUME_SQL = "delete from RESUME_RECORDS where resume_id = ?";
+        String PROFILE_SQL = "delete from PROFILES where profile_id = ?";
+        String profileID = jdbcTemplate.queryForObject("select PROFILE_ID from RESUME_RECORDS where resume_id = ?",new Object[]{resumeID}, String.class);
+
+        jdbcTemplate.update(RESUME_SQL,resumeID);
+        jdbcTemplate.update(PROFILE_SQL,profileID);
+    }
+
+
+    /**
+     * Common method to call procedure
+     * @param procedure
+     * @param input
+     * @param id
+     * @return Map<String,Object>
+     */
     private Map<String,Object> callProcedure(String procedure,String input,Integer id){
         simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withCatalogName("RESUME_PKG").withProcedureName(procedure);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue(input,id);
