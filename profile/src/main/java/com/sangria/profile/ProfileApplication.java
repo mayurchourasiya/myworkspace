@@ -23,25 +23,25 @@ public class ProfileApplication extends SpringBootServletInitializer {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	@PostMapping(value = "/create")
+	@PostMapping(value = "/resume")
 	public ResponseEntity createRecord(@RequestBody Resume resume) {
 		BigDecimal profileId = resumeService.createProfile(resume.getProfile());
 		BigDecimal resumeId = resumeService.createResume(resume,profileId);
 		return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentContextPath().path("/retrieve/"+resumeId.intValue()).build().toUri()).build();
 	}
 
-	@GetMapping(value = "/retrieve/{resumeId}")
+	@GetMapping(value = "/resume/{resumeId}")
 	public ResponseEntity getRecord(@PathVariable("resumeId") String resumeId ) {
 		return ResponseEntity.ok(resumeService.getResume(Integer.valueOf(resumeId)));
 	}
 
-	@PutMapping(value = "/update/{resumeId}")
+	@PutMapping(value = "/resume/{resumeId}")
 	public ResponseEntity updateResume(@PathVariable("resumeId") String resumeId,@RequestBody Resume resume) {
 		resumeService.updateResume(Integer.valueOf(resumeId).intValue(),resume);
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping(value = "/delete/{resumeId}")
+	@DeleteMapping(value = "/resume/{resumeId}")
 	public ResponseEntity deleteResume(@PathVariable("resumeId") String resumeId) {
 		resumeService.deleteResume(Integer.valueOf(resumeId));
 		return ResponseEntity.ok().build();
