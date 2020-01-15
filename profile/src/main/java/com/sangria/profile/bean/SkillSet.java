@@ -1,5 +1,8 @@
 package com.sangria.profile.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillSet {
 
     private String skillName;

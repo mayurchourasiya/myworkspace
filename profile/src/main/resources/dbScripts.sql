@@ -101,7 +101,7 @@ o_hobbies OUT VARCHAR2
 )
 IS
 BEGIN
-select profile_id,SKILLSET,hobbies into o_profile_id,o_skills,o_hobbies from RESUME_RECORDS;
+select profile_id,SKILLSET,hobbies into o_profile_id,o_skills,o_hobbies from RESUME_RECORDS where RESUME_ID = i_resume_id;;
 end getResume;
 
 ------------------------------------------------------------------------------------------

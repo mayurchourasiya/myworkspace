@@ -1,8 +1,12 @@
 package com.sangria.profile.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * profile pojo
  */
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Profile {
 
     private String name;

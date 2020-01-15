@@ -110,7 +110,7 @@ public class ResumeService {
 
     public List<Resume> findAll() {
         List<Resume> resumeList = new ArrayList<>();
-        List<Map<String, Object>> recordsList = jdbcTemplate.queryForList("SELECT resume_records.resume_id, profiles.name FROM resume_records INNER JOIN profiles ON resume_records.resume_id = profiles.profile_id ORDER BY resume_id");
+        List<Map<String, Object>> recordsList = jdbcTemplate.queryForList("SELECT resume_records.resume_id, profiles.name FROM resume_records INNER JOIN profiles ON resume_records.profile_id = profiles.profile_id ORDER BY resume_id");
         for(Map m : recordsList) {
             Resume resume = new Resume();
             resume.setResumeID(String.valueOf(m.get("resume_id")));
