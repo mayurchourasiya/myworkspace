@@ -47,6 +47,11 @@ public class ProfileApplication extends SpringBootServletInitializer {
 		return ResponseEntity.ok().build();
 	}
 
+	@GetMapping(value = "/resume")
+	public ResponseEntity findAll() {
+		return ResponseEntity.ok(resumeService.findAll());
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(ProfileApplication.class, args);
 	}

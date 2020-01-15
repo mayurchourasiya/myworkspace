@@ -1,5 +1,6 @@
 package com.sangria.profile.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sangria.profile.bean.Profile;
 import com.sangria.profile.bean.Resume;
 import com.sangria.profile.builder.Utility;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -89,13 +91,9 @@ public class ResumeService {
 
         String skillSet = utility.prepareSkillSet(resume.getSkillSet());
         String hobby = utility.prepareHobbies(resume.getHobbies());
-
-
         simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withCatalogName("RESUME_PKG").withProcedureName("updateResume");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("i_resume_id",resumeID).addValue("i_skills",skillSet)
                 .addValue("i_hobbies",hobby).addValue("i_name",resume.getProfile().getName()).addValue("i_role",resume.getProfile().getRole());
-
-
         Map<String,Object> result = simpleJdbcCall.execute(sqlParameterSource);
         return (BigDecimal) result.get("O_RESUME_ID");
     }
@@ -108,6 +106,20 @@ public class ResumeService {
 
         jdbcTemplate.update(RESUME_SQL,resumeID);
         jdbcTemplate.update(PROFILE_SQL,profileID);
+    }
+
+    public List<Resume> findAll() {
+        List<Resume> resumeList = new ArrayList<>();
+        List<Map<String, Object>> recordsList = jdbcTemplate.queryForList("SELECT resume_records.resume_id, profiles.name FROM resume_records INNER JOIN profiles ON resume_records.resume_id = profiles.profile_id ORDER BY resume_id");
+        for(Map m : recordsList) {
+            Resume resume = new Resume();
+            resume.setResumeID(String.valueOf(m.get("resume_id")));
+            Profile profile = new Profile();
+            profile.setName(String.valueOf(m.get("name")));
+            resume.setProfile(profile);;
+            resumeList.add(resume);
+        }
+        return resumeList;
     }
 
 
