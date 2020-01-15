@@ -24,6 +24,17 @@ i_name IN VARCHAR2,
 i_role IN VARCHAR2,
 o_profile_id OUT NUMBER
 );
+PROCEDURE getProfile(
+i_profile_id IN NUMBER,
+o_name OUT VARCHAR2,
+o_role OUT VARCHAR2
+);
+PROCEDURE getResume(
+i_resume_id IN NUMBER,
+o_profile_id OUT NUMBER,
+o_skills OUT VARCHAR2,
+o_hobbies OUT VARCHAR2
+);
 END RESUME_PKG;
 
 *****************************************************************************************************
@@ -53,4 +64,32 @@ BEGIN
 insert into PROFILES(name,role) values(i_name,i_role) RETURNING PROFILE_ID into o_profile_id;
 commit;
 end createProfile;
+
+PROCEDURE getProfile(
+i_profile_id IN NUMBER,
+o_name OUT VARCHAR2,
+o_role OUT VARCHAR2
+)
+IS
+
+BEGIN
+
+select name,role into o_name,o_role from PROFILES;
+
+end getProfile;
+
+PROCEDURE getResume(
+i_resume_id IN NUMBER,
+o_profile_id OUT NUMBER,
+o_skills OUT VARCHAR2,
+o_hobbies OUT VARCHAR2
+)
+IS
+
+BEGIN
+
+select profile_id,SKILLSET,hobbies into o_profile_id,o_skills,o_hobbies from RESUME_RECORDS;
+
+end getResume;
 END RESUME_PKG;
+
