@@ -62,7 +62,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>resume</finalName>
+		<finalName>resume-service</finalName>
 	</build>
 
 </project>
