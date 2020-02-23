@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 
 @RestController
 @SpringBootApplication
+@CrossOrigin(allowedHeaders = "",allowCredentials = "")
 public class ProfileApplication extends SpringBootServletInitializer {
 
 	@Autowired
