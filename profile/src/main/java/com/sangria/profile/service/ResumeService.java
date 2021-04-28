@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,23 +65,28 @@ public class ResumeService {
      * @param resumeId
      * @return Resume
      */
-    public Resume getResume(Integer resumeId){
-        Map<String,Object> resumeResult = callProcedure("getResume","i_resume_id",resumeId);
-        String skillSet = (String) resumeResult.get("O_SKILLS");
-        String hobby = (String) resumeResult.get("O_HOBBIES");
-        BigDecimal profileId = (BigDecimal) resumeResult.get("O_PROFILE_ID");
+    public Resume getResume(Integer resumeId) throws SQLException{
 
-        Map<String,Object> profileResult = callProcedure("getProfile","i_profile_id",profileId.intValue());
-        String name = (String) profileResult.get("O_NAME");
-        String role = (String) profileResult.get("O_ROLE");
+        try {
+            Map<String, Object> resumeResult = callProcedure("getResume", "i_resume_id", resumeId);
+            String skillSet = (String) resumeResult.get("O_SKILLS");
+            String hobby = (String) resumeResult.get("O_HOBBIES");
+            BigDecimal profileId = (BigDecimal) resumeResult.get("O_PROFILE_ID");
 
-        Profile profile = new Profile();
-        profile.setName(name);
-        profile.setRole(role);
+            Map<String, Object> profileResult = callProcedure("getProfile", "i_profile_id", profileId.intValue());
+            String name = (String) profileResult.get("O_NAME");
+            String role = (String) profileResult.get("O_ROLE");
 
-        Resume resume = new Resume();
-        resume.setProfile(profile);
-        return utility.prepareResume(skillSet.split(","),hobby.split(","),resume);
+            Profile profile = new Profile();
+            profile.setName(name);
+            profile.setRole(role);
+
+            Resume resume = new Resume();
+            resume.setProfile(profile);
+            return utility.prepareResume(skillSet.split(","), hobby.split(","), resume);
+        } catch (Exception e) {
+            throw new SQLException(e.getMessage());
+        }
     }
 
     /**
@@ -135,6 +141,7 @@ public class ResumeService {
         simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withCatalogName("RESUME_PKG").withProcedureName(procedure);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue(input,id);
         return simpleJdbcCall.execute(sqlParameterSource);
+
     }
 
 }

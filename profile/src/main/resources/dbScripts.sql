@@ -64,6 +64,7 @@ BEGIN
 insert into RESUME_RECORDS(SKILLSET,HOBBIES,PROFILE_ID) values(i_skills,i_hobbies,i_profile_id) RETURNING RESUME_ID into o_resume_id;
 commit;
 end createResume;
+
 -------------------------------------------------------------------------------------
 /*First create the profile*/
 
@@ -77,6 +78,7 @@ BEGIN
 insert into PROFILES(name,role) values(i_name,i_role) RETURNING PROFILE_ID into o_profile_id;
 commit;
 end createProfile;
+
 ---------------------------------------------------------------------------------------
 /*retrieve profile*/
 
@@ -101,7 +103,7 @@ o_hobbies OUT VARCHAR2
 )
 IS
 BEGIN
-select profile_id,SKILLSET,hobbies into o_profile_id,o_skills,o_hobbies from RESUME_RECORDS where RESUME_ID = i_resume_id;;
+select profile_id,SKILLSET,hobbies into o_profile_id,o_skills,o_hobbies from RESUME_RECORDS where RESUME_ID = i_resume_id;
 end getResume;
 
 ------------------------------------------------------------------------------------------
